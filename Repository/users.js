@@ -1,6 +1,4 @@
-const { json } = require('body-parser');
 const fs = require('fs');
-const { test } = require('node:test');
 const crypto = require('crypto');
 
 class UsersRepository {
@@ -22,6 +20,7 @@ class UsersRepository {
             encoding: 'utf-8'
         }));
     }
+
     async create(attrs) {
         attrs.Id = this.randomId();
         const records = await this.getAll();
@@ -36,17 +35,41 @@ class UsersRepository {
     randomId() {
         return crypto.randomBytes(4).toString('hex');
     }
-    async getOne(id) {
+
+    async getOne(email) {
 
         const records = await this.getAll();
-        return records.find(x => x.Id === id);
+        return records.find(x => x.email === email);
     }
+
+    async delete(id){
+        const records = await this.getAll();
+        const filtertedData = records.filter(record => record.Id !== id);
+        await this.writeAll(filtertedData);
+    }
+
+    async update(id,attrs){
+        const records = await this.getAll();
+        const user = records.find(record => record.Id === id);
+        if(!user){
+            throw new Error('Id not found');
+        }
+        Object.assign(user,attrs);
+        await this.writeAll(records);
+    }
+
+   
 }
 
 const test1 = async () => {
-    const repo = new UsersRepository('users.json');
-    const user = await repo.getOne('dd43b20a');
-    console.log(user);
+   const repo = new UsersRepository('users.json');
+
+   //await repo.create({email : 'xyz@gmail.com'});
+
+//    const user =  await repo.getAll();
+//    console.log(user);
+
+await repo.update('7d1ea20f',{email : 'xyz@gmail.com',password : 'password1'});
 };
 
-test1();
+module.exports = new UsersRepository('users.json');
