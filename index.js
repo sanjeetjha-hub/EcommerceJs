@@ -4,6 +4,7 @@ const userrepo = require('./Repository/users');
 const cookieSession = require('cookie-session');
 const e = require('express');
 const app = express();
+const crypto = require('crypto');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieSession({
