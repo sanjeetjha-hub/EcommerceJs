@@ -26,6 +26,7 @@ class UsersRepository {
         const records = await this.getAll();
         records.push(attrs);
         await this.writeAll(records);
+        return attrs
     }
 
     async writeAll(records) {
@@ -42,34 +43,34 @@ class UsersRepository {
         return records.find(x => x.email === email);
     }
 
-    async delete(id){
+    async delete(id) {
         const records = await this.getAll();
         const filtertedData = records.filter(record => record.Id !== id);
         await this.writeAll(filtertedData);
     }
 
-    async update(id,attrs){
+    async update(id, attrs) {
         const records = await this.getAll();
         const user = records.find(record => record.Id === id);
-        if(!user){
+        if (!user) {
             throw new Error('Id not found');
         }
-        Object.assign(user,attrs);
+        Object.assign(user, attrs);
         await this.writeAll(records);
     }
 
-   
+
 }
 
 const test1 = async () => {
-   const repo = new UsersRepository('users.json');
+    const repo = new UsersRepository('users.json');
 
-   //await repo.create({email : 'xyz@gmail.com'});
+    //await repo.create({email : 'xyz@gmail.com'});
 
-//    const user =  await repo.getAll();
-//    console.log(user);
+    //    const user =  await repo.getAll();
+    //    console.log(user);
 
-await repo.update('7d1ea20f',{email : 'xyz@gmail.com',password : 'password1'});
+    await repo.update('7d1ea20f', { email: 'xyz@gmail.com', password: 'password1' });
 };
 
 module.exports = new UsersRepository('users.json');
