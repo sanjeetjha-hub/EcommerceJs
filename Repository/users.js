@@ -40,6 +40,13 @@ class UsersRepository {
         return record;
     }
 
+        async comparePasswords(saved,supplied){
+
+            const[hashed,salt] = saved.split('.');
+            const hashedSuppliedBuf = await scrypt(supplied,salt,64);
+
+            return hashed === hashedSuppliedBuf.toString('hex');
+        }
     async writeAll(records) {
         await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2));
     }
@@ -72,16 +79,4 @@ class UsersRepository {
 
 
 }
-
-const test1 = async () => {
-    const repo = new UsersRepository('users.json');
-
-    //await repo.create({email : 'xyz@gmail.com'});
-
-    //    const user =  await repo.getAll();
-    //    console.log(user);
-
-    await repo.update('7d1ea20f', { email: 'xyz@gmail.com', password: 'password1' });
-};
-
 module.exports = new UsersRepository('users.json');

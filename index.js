@@ -62,13 +62,15 @@ app.get('/signin', (req, res) => {
 app.post('/signin', async (req, res) => {
     const { email, password } = req.body;
 
-    const user = await userrepo.getOne({ email });
+    const user = await userrepo.getOne(email);
 
     if (!user) {
         return res.send('Email Not Found');
     }
 
-    if (user.password !== user.password) {
+    const validPassword = await userrepo.comparePasswords(user.password,password);
+
+    if (!validPassword) {
         return res.send('Invalid Password');
     }
 
