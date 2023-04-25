@@ -26,7 +26,7 @@ module.exports = {
         throw new Error('Passwords must match');
       }
     }),
-    requireEmailExist : check('email')
+  requireEmailExist: check('email')
     .trim()
     .normalizeEmail()
     .isEmail()
@@ -37,11 +37,11 @@ module.exports = {
         throw new Error('Email not found!');
       }
     }),
-    requireValidPasswordForUser : check('password').trim()
-    .custom(async (password,{req}) => {
-      const user = await usersRepo.getOneBy({ email : req.body.email });
+  requireValidPasswordForUser: check('password').trim()
+    .custom(async (password, { req }) => {
+      const user = await usersRepo.getOneBy({ email: req.body.email });
 
-      if(!user){
+      if (!user) {
         throw new Error('Invalid Password');
       }
 
