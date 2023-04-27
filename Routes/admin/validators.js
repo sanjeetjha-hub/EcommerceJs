@@ -34,7 +34,9 @@ module.exports = {
       if (passwordConfirmation !== req.body.password) {
         throw new Error('Passwords must match');
       }
-    }),
+      return true;
+    })
+  ,
   requireEmailExist: check('email')
     .trim()
     .normalizeEmail()

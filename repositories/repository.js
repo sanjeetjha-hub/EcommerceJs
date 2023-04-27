@@ -59,7 +59,7 @@ module.exports = class Repository {
     async update(id, attrs) {
         const records = await this.getAll();
         const record = records.find(record => record.id === id);
-
+        console.log(record);
         if (!record) {
             throw new Error(`Record with id ${id} not found`);
         }
