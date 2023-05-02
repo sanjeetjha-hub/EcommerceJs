@@ -5,4 +5,4 @@ class cartsRepository extends repositories {
 }
 
 
-module.exports = cartsRepository('carts.json');
+module.exports = new cartsRepository('carts.json');
